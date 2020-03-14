@@ -3,7 +3,6 @@ from django.contrib import admin
 
 from .views import (
     comment_thread,
-
     )
 
 urlpatterns = [

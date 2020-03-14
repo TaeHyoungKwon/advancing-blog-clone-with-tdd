@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
 from trydjango19.helpers import get_or_create_new_comment
@@ -21,14 +22,14 @@ def comment_thread(request, id):
 
     initial_data = {"content_type": obj.content_type, "object_id": obj.object_id}
     form = CommentForm(request.POST or None, initial=initial_data)
-    if form.is_valid():
+    if form.is_valid() and request.user.is_authenticated():
         new_comment = get_or_create_new_comment(form, request)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
 
     context = {"comment": obj, "form": form}
     return render(request, "comment_thread.html", context)
 
-
+@login_required
 def comment_delete(request, id):
     try:
         obj = Comment.objects.get(id=id)

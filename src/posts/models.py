@@ -16,6 +16,8 @@ from markdown_deux import markdown
 
 #Post.objects.all().published()
 #Post.objects.create(user=user, title="Some time")
+from comments.models import Comment
+
 
 class PostQuerySet(models.query.QuerySet):
     def not_draft(self):
@@ -37,7 +39,10 @@ def upload_location(instance, filename):
     #filebase, extension = filename.split(".")
     #return "%s/%s.%s" %(instance.id, instance.id, extension)
     PostModel = instance.__class__
-    new_id = PostModel.objects.order_by("id").last().id + 1
+    try:
+        new_id = PostModel.objects.order_by("id").last().id + 1
+    except AttributeError:
+        new_id = 0
     """
     instance.__class__ gets the model Post. We must use this method because the model is defined below.
     Then create a queryset ordered by the "id"s of each object, 
@@ -46,6 +51,7 @@ def upload_location(instance, filename):
     We add 1 to it, so we get what should be the same id as the the post we are creating.
     """
     return "%s/%s" %(new_id, filename)
+
 
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
@@ -79,7 +85,12 @@ class Post(models.Model):
         ordering = ["-timestamp", "-updated"]
 
     def get_markdown(self):
+        print(mark_safe(markdown(self.content)))
         return mark_safe(markdown(self.content))
+
+    @property
+    def comments(self):
+        return Comment.objects.filter_by_instance(self)
        
 #    @property
 #    def title(self):

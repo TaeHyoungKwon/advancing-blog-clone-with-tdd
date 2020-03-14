@@ -43,14 +43,26 @@ Linkedin
 
    <div class='post-detail-item'>{{ instance.get_markdown }}</div>
 
-
     <hr/>
     <br/>
 
     <div>
-        {{ instance.comment_set.all }}
+
+        <p class='lead'>Comments</p>
+        <hr/>
+        {% for comment in comments %}
+
+        <blockquote>
+          <p>{{ comment.content }}</p>
+          <footer>via {{ comment.user }} | {{ comment.timestamp|timesince }} ago</footer>
+        </blockquote>
+
+        <hr/>
+        {% endfor %}
     </div>
-    <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div>
+
+
+
 
 </div>
 </div>

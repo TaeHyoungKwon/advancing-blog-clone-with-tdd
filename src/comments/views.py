@@ -1,6 +1,5 @@
 from trydjango19.helpers import get_or_create_new_comment
 
-rom django.contrib
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404

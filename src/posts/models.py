@@ -68,6 +68,7 @@ class Post(models.Model):
     content = models.TextField()
     draft = models.BooleanField(default=False)
     publish = models.DateField(auto_now=False, auto_now_add=False)
+    read_time = models.IntegerField(default=0)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -118,12 +119,16 @@ def create_slug(instance, new_slug=None):
 '''
 unique_slug_generator from Django Code Review #2 on joincfe.com/youtube/
 '''
-from .utils import unique_slug_generator
+from .utils import get_read_time
+
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         # instance.slug = create_slug(instance)
-        instance.slug = unique_slug_generator(instance)
+        instance.slug = create_slug(instance)
+
+    if instance.content:
+        instance.read_time = get_read_time(instance.get_markdown())
 
 
 

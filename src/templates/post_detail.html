@@ -46,19 +46,7 @@ Linkedin
 </p> -->
         <div class='col-sm-12 '>
 
-
-            {{ instance.content|linebreaks }}
-            <div class='content-markdown'>{{ instance.content }}</div>
-
-            <div class='content-markdown'>{{ instance.content }}</div>
-            <hr/>
-            <div class='content-markdown'>{{ instance.content }}</div>
-            <br/>
-            <div class='content-markdown'>{{ instance.content }}</div>
-            <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5"></div>
-            <div class='content-markdown'>{{ instance.content }}</div>
-            <div class='content-markdown'>{{ instance.content }}</div>
-
+            <div class='post-detail-item'>{{ instance.get_markdown }}</div>
 
             <hr/>
             <br/>

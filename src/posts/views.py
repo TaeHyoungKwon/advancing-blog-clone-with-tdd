@@ -78,12 +78,16 @@ def post_detail(request, slug=None):
     initial_data = {"content_type": instance.get_content_type, "object_id": instance.id}
     form = CommentForm(request.POST or None, initial=initial_data)
     if form.is_valid():
-        Comment.objects.get_or_create(
+        new_comment, created = Comment.objects.get_or_create(
             user=request.user,
             content_type=ContentType.objects.get(model=form.cleaned_data["content_type"]),
             object_id=form.cleaned_data["object_id"],
             content=form.cleaned_data["content"],
         )
+        if created and request.POST.get('parent_id'):
+            new_comment.set_parent(int(request.POST.get('parent_id')))
+
+        return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
 
     context = {
         "title": instance.title,

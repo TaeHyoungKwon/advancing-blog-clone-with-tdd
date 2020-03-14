@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Local apps
     'posts',
     'comments',
+    'django_extensions',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

@@ -17,8 +17,8 @@
         {% block style %}{% endblock style %}
     </style>
 
-{% block head_extra %}
-{% endblock head_extra %}
+    {% block head_extra %}
+    {% endblock head_extra %}
 </head>
 <body>
 <div id="fb-root"></div>
@@ -55,6 +55,9 @@
             var markedContent = marked(content)
             console.log(markedContent)
             $(this).html(markedContent)
+        })
+        $(".content-markdown img").each(function () {
+            $(this).addClass("img-responsive");
         })
 
     })
